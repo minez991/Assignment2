@@ -1,18 +1,17 @@
 #include "database_main.h"
 
 
-void print_book(struct Book* book){
-
+void print_book_tree(struct Book* book){		/*print the book tree*/
 	if (book == NULL){
 	return;
 	}
-	print_book(book->left);
+	print_book_tree(book->left);
 	if (book->year != -1){
 	printf("Title: %s\n",book->title);
 	printf("Author: %s\n",book->author);
 	printf("Year: %i\n\n",book->year);
 }
-	print_book(book->right);
+	print_book_tree(book->right);
 
 }
 
@@ -20,24 +19,27 @@ void print_book(struct Book* book){
 void addtotree(struct Book** book_tree,struct Book* newbook){
 	/*if the book tree is empty add this in*/
 	if (*book_tree == NULL){
-
 		*book_tree = newbook;
+		fprintf(stderr,"Successfully Added\n");
 
 	}else if(strcmp(newbook->title,(*book_tree)->title) > 0 ){
 
 		addtotree((&(*book_tree)->right),newbook);
 
 	}else if(strcmp(newbook->title,(*book_tree)->title) < 0 ){
-
 		addtotree((&(*book_tree)->left),newbook);
-	}
+	}else if(strcmp(newbook->title,(*book_tree)->title) == 0 ){
+		strcpy((*book_tree)->author,newbook->author);
+		(*book_tree)->year = newbook->year;
+		fprintf(stderr,"Successfully Updated");
+	};
 
 };
 
 void clear_input_buffer(){
 	char c;
-	while ((c = getchar()) != '\n' && c != EOF) { }
-}
+	while ((c = getchar()) != '\n' && c != EOF) {}
+	}
 
 void menu_add_book(void){
 
@@ -58,7 +60,7 @@ void menu_add_book(void){
 
 	do{
 	fprintf ( stderr,"Year: ");
-	temp = scanf ("%i", &(new->year));	
+	temp = scanf ("%d", &(new->year));	
 	clear_input_buffer();
 	}while(temp != 1 || (new->year < 0));
 
@@ -70,7 +72,8 @@ void menu_add_book(void){
 /* menu_print_database():
  * Print database of books to standard output in alphabetical order of title.
  */
-void menu_print_database(void){ /*I dont want to change the main, so I made a new function*/
-   print_book(book_tree);
+void menu_print_database(void){
+	fprintf(stderr,"\nPrinting Database\n\n");	 /*I dont want to change the main, so I made a new function*/
+	print_book_tree(book_tree);
 }	    
 
