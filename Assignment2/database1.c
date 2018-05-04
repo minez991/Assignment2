@@ -43,7 +43,7 @@ void menu_add_book(void){
 
 	struct Book *new;
 	new = (struct Book*) malloc(sizeof(struct Book));
-
+	int temp;
 	do{
 	fprintf ( stderr,"Book Name:");
 	scanf ("%[^\n]", new->title);
@@ -56,9 +56,12 @@ void menu_add_book(void){
 	clear_input_buffer();
 	}while((new->author)[0] == '\n' || (new->author)[0] == '\0');
 
+	do{
 	fprintf ( stderr,"Year: ");
-	scanf ("%i", &(new->year));	
-	
+	temp = scanf ("%i", &(new->year));	
+	clear_input_buffer();
+	}while(temp != 1 || (new->year < 0));
+
 	new->left=new->right=NULL;
 	addtotree(&book_tree,new);
 }

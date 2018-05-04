@@ -1,9 +1,9 @@
 #include "database_main.h"
 void clear_input_buffer();
+
 struct Book* lookforbook(struct Book* book_tree, char* book_name){
 
 	if (book_tree == NULL){
-
 		return NULL;
 	}
 
@@ -28,17 +28,18 @@ void menu_get_book_details(void)
 	struct Book* temp_book;
 
 	fprintf(stderr,"What is the name of the book?: ");
-	scanf("%s",book_name);
+	scanf("%[^\n]",book_name);
 	clear_input_buffer();
-
+	fprintf(stderr,"Looking for: %s",book_name);
+	
 	temp_book = lookforbook(book_tree,book_name);
 
 	if (temp_book == NULL){
 		fprintf(stderr,"Do not exist\n");
 	}else{
 		printf("Title: %s\n",temp_book->title);
-		printf("author: %s\n",temp_book->author);
-		printf("year: %i\n", temp_book->year);
+		printf("Author: %s\n",temp_book->author);
+		printf("Year: %i\n\n", temp_book->year);
 	}
 	free(book_name);
 }
@@ -53,7 +54,7 @@ void menu_delete_book(void)
 	struct Book* temp_book;
 
 	fprintf(stderr,"What is the name of the book?: ");
-	scanf("%s",book_name);
+	scanf("%[^\n]",book_name);
 	clear_input_buffer();
 
 	temp_book = lookforbook(book_tree,book_name);
